@@ -11,17 +11,14 @@ interface PlanComparisonProps {
 const plans = [
   {
     id: "guardada",
-    name: "Guardada / En pausa",
-    description: "Siempre publicado y editable, sin visibilidad activa.",
+    name: "Guardada",
+    description: "Publicado y editable, sin visibilidad.",
     price: "Gratis",
-    priceDetail: "Sin coste",
     features: [
       { text: "Anuncio publicado", included: true },
       { text: "Edición ilimitada", included: true },
       { text: "Visibilidad activa", included: false },
-      { text: "Recepción de leads", included: false },
-      { text: "Funciones Destacado", included: false },
-      { text: "Funciones Prime", included: false },
+      { text: "Leads", included: false },
     ],
     cta: null,
     popular: false,
@@ -30,16 +27,13 @@ const plans = [
   {
     id: "simple",
     name: "Anuncio Simple",
-    description: "Visibilidad activa hasta alcanzar el tope de leads.",
+    description: "Visible hasta el tope de leads.",
     price: "Gratis",
-    priceDetail: "Con bolsa de leads",
     features: [
       { text: "Anuncio publicado", included: true },
       { text: "Edición ilimitada", included: true },
       { text: "Visibilidad activa", included: true },
       { text: "Leads hasta el tope", included: true, glossary: "tope" as const },
-      { text: "Funciones Destacado", included: false },
-      { text: "Funciones Prime", included: false },
     ],
     cta: "Activar gratis",
     ctaVariant: "outline" as const,
@@ -49,16 +43,13 @@ const plans = [
   {
     id: "pro",
     name: "Plan Pro",
-    description: "Visibilidad continua, leads ilimitados y máxima exposición.",
+    description: "Visibilidad continua y sin límites.",
     price: "Premium",
-    priceDetail: "Personalizado",
     features: [
-      { text: "Anuncio publicado", included: true },
-      { text: "Edición ilimitada", included: true },
       { text: "Visibilidad continua", included: true },
       { text: "Leads ilimitados", included: true },
-      { text: "Funciones Destacado", included: true },
-      { text: "Funciones Prime", included: true },
+      { text: "Destacado + Prime", included: true },
+      { text: "Sin pausas", included: true },
     ],
     cta: "Calcular mi Plan Pro",
     ctaVariant: "default" as const,
@@ -72,80 +63,70 @@ const PlanComparison = ({
   planProUrl = "#",
 }: PlanComparisonProps) => {
   return (
-    <section id="planes" className="py-20 lg:py-28 bg-surface">
+    <section id="planes" className="py-12 bg-surface">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Section header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="inline-block text-sm font-semibold text-primary uppercase tracking-wider mb-4">
-            Comparativa de planes
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-foreground mb-4">
-            Elige el plan que mejor se adapte a ti
+        <div className="text-center max-w-2xl mx-auto mb-8">
+          <h2 className="font-display text-2xl sm:text-3xl font-bold text-foreground mb-2">
+            Elige tu plan
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Desde publicar gratis hasta máxima visibilidad con el{" "}
+          <p className="text-muted-foreground text-sm">
+            Desde gratis hasta visibilidad sin límites con{" "}
             <GlossaryTooltip termKey="premium">Plan Pro</GlossaryTooltip>.
           </p>
         </div>
 
         {/* Plans grid */}
-        <div className="grid md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-4 max-w-4xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`relative flex flex-col rounded-2xl border-2 bg-card p-6 lg:p-8 transition-all duration-300 hover:shadow-lg ${
+              className={`relative flex flex-col rounded-xl border-2 bg-card p-4 transition-all duration-300 hover:shadow-md ${
                 plan.popular
-                  ? "border-primary shadow-xl shadow-primary/10 scale-[1.02]"
+                  ? "border-primary shadow-lg shadow-primary/10"
                   : "border-border hover:border-primary/30"
               }`}
             >
               {/* Popular badge */}
               {plan.popular && (
-                <Badge className="absolute -top-3 left-1/2 -translate-x-1/2 gap-1 px-4 py-1 bg-primary text-primary-foreground">
+                <Badge className="absolute -top-2.5 left-1/2 -translate-x-1/2 gap-1 px-3 py-0.5 text-xs bg-primary text-primary-foreground">
                   <Star className="w-3 h-3 fill-current" />
                   Recomendado
                 </Badge>
               )}
 
               {/* Plan header */}
-              <div className="mb-6">
-                <h3 className="font-display text-xl font-bold text-foreground mb-2">
+              <div className="mb-3">
+                <h3 className="font-display text-lg font-bold text-foreground">
                   <GlossaryTooltip termKey={plan.glossaryKey} showIcon={false}>
                     {plan.name}
                   </GlossaryTooltip>
                 </h3>
-                <p className="text-muted-foreground text-sm">{plan.description}</p>
+                <p className="text-muted-foreground text-xs">{plan.description}</p>
               </div>
 
               {/* Price */}
-              <div className="mb-6">
-                <div className="flex items-baseline gap-2">
-                  <span
-                    className={`text-3xl font-bold ${
-                      plan.popular ? "gradient-text" : "text-foreground"
-                    }`}
-                  >
-                    {plan.price}
-                  </span>
-                </div>
-                <span className="text-sm text-muted-foreground">{plan.priceDetail}</span>
+              <div className="mb-4">
+                <span
+                  className={`text-2xl font-bold ${
+                    plan.popular ? "gradient-text" : "text-foreground"
+                  }`}
+                >
+                  {plan.price}
+                </span>
               </div>
 
               {/* Features */}
-              <ul className="space-y-3 mb-8 flex-1">
+              <ul className="space-y-2 mb-4 flex-1">
                 {plan.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3">
+                  <li key={i} className="flex items-center gap-2">
                     {feature.included ? (
-                      <div className="w-5 h-5 rounded-full bg-success/10 flex items-center justify-center shrink-0 mt-0.5">
-                        <Check className="w-3 h-3 text-success" />
-                      </div>
+                      <Check className="w-4 h-4 text-success shrink-0" />
                     ) : (
-                      <div className="w-5 h-5 rounded-full bg-muted flex items-center justify-center shrink-0 mt-0.5">
-                        <X className="w-3 h-3 text-muted-foreground" />
-                      </div>
+                      <X className="w-4 h-4 text-muted-foreground shrink-0" />
                     )}
                     <span
-                      className={`text-sm ${
+                      className={`text-xs ${
                         feature.included ? "text-foreground" : "text-muted-foreground"
                       }`}
                     >
@@ -166,15 +147,13 @@ const PlanComparison = ({
                 <Button
                   asChild
                   variant={plan.ctaVariant}
-                  size="lg"
-                  className={`w-full font-semibold ${
-                    plan.popular
-                      ? "shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30"
-                      : ""
+                  size="sm"
+                  className={`w-full font-semibold text-xs ${
+                    plan.popular ? "shadow-md" : ""
                   }`}
                 >
                   <a href={plan.id === "pro" ? planProUrl : activateUrl}>
-                    {plan.popular && <Sparkles className="w-4 h-4 mr-2" />}
+                    {plan.popular && <Sparkles className="w-3 h-3 mr-1" />}
                     {plan.cta}
                   </a>
                 </Button>
